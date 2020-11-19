@@ -2,5 +2,5 @@
 
 void println(char *s)
 {
-	printf("%s\r\n", s);
+  printf("%s\r\n", s);
 }
