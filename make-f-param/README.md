@@ -1,8 +1,8 @@
 ## make -f 传参
 
-param0，调试用传参
-param1，导出为环境变量传参
-param2，传递失败
+- param0，调试用传参
+- param1，导出为环境变量传参
+- param2，传递失败
 
 ```
 
