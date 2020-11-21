@@ -30,8 +30,7 @@ all:
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o
 
 clean:
-	rm -f $(shell find -name "*.o")
-	rm -f $(shell find -name "*.d")
+	$(Q)$(MAKE) $(mclean)=.
 	rm -f $(TARGET)
 
 .PHONY:all clean

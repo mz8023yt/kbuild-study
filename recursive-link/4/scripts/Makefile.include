@@ -1,5 +1,6 @@
 mdebug      := 0
 mbuild := -f $(srctree)/scripts/Makefile.build obj
+mclean := -f $(srctree)/scripts/Makefile.clean obj
 
 MAKE        := make --no-print-directory
 Q           := @

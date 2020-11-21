@@ -1,0 +1,39 @@
+include $(srctree)/scripts/Makefile.include
+
+src := $(obj)
+kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+
+PHONY := __clean
+__clean :
+
+obj-y :=
+subdir-y :=
+
+include $(kbuild-dir)/Makefile
+
+__subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
+subdir-y    += $(__subdir-y)
+subdir-y    := $(addprefix $(obj)/,$(subdir-y))
+subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
+cur_objs := $(filter-out %/, $(obj-y))
+cur_objs := $(addprefix $(obj)/,$(cur_objs))
+dep_files := $(foreach f,$(cur_objs),$(f).d)
+
+ifeq ($(mdebug), 1)
+$(info 1. $(obj))
+$(info 2. $(kbuild-dir))
+$(info 3. $(subdir-y))
+$(info 4. $(subdir_objs))
+$(info 5. $(cur_objs))
+$(info 6. $(dep_files))
+endif
+
+PHONY += $(subdir-y)
+
+__clean : $(subdir-y) 
+	rm -rf $(cur_objs) $(dep_files) $(obj)/built-in.o
+
+$(subdir-y):
+	$(Q)$(MAKE) $(mclean)=$@
+
+.PHONY : $(PHONY)  
