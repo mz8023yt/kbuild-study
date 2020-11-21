@@ -1,3 +1,5 @@
+include $(srctree)/scripts/Makefile.include
+
 ### 目标
 PHONY := build
 build :
@@ -16,7 +18,7 @@ include Makefile
 
 ### 将 obj-y 中所有的子目录目标最后的反斜杠给删除
 __subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
-subdir-y    += $(__subdir-y)
+subdir-y    += $(strip $(__subdir-y))
 
 ### 将 obj-y 中所有的子目录目标，在子目录下创建 built-in.o 目标
 subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
@@ -25,11 +27,18 @@ subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
 cur_objs    := $(filter-out %/, $(obj-y))
 dep_files   := $(foreach f,$(cur_objs),.$(f).d)
 
+ifeq ($(mdebug), 1)
+$(info 1. $(subdir-y))
+$(info 2. $(subdir_objs))
+$(info 3. $(cur_objs))
+$(info 4. $(dep_files))
+endif
+
 PHONY += $(subdir-y)
 
 build : $(subdir-y) built-in.o
 $(subdir-y):
-	make -C $@ -f $(srctree)/scripts/Makefile.build
+	$(Q)$(MAKE) -C $@ -f $(srctree)/scripts/Makefile.build
 
 built-in.o : $(cur_objs) $(subdir_objs)
 	$(LD) -r -o $@ $^

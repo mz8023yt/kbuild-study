@@ -1,3 +1,4 @@
+
 CROSS_COMPILE   =
 AS              = $(CROSS_COMPILE)as
 LD              = $(CROSS_COMPILE)ld
@@ -16,6 +17,7 @@ export CFLAGS LDFLAGS
 
 srctree         := $(shell pwd)
 export srctree
+include $(srctree)/scripts/Makefile.include
 
 TARGET := app
 
@@ -24,7 +26,7 @@ obj-y += a/
 obj-y += b/
 
 all:
-	make -C ./ -f $(srctree)/scripts/Makefile.build
+	$(Q)$(MAKE) -C ./ -f $(srctree)/scripts/Makefile.build
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o
 
 clean:

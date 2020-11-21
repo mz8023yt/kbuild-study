@@ -1,0 +1,6 @@
+mdebug      := 0
+
+MAKE        := make --no-print-directory
+Q           := @
+
+.PHONY: FORCE
