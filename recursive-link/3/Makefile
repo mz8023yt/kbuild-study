@@ -26,7 +26,7 @@ obj-y += a/
 obj-y += b/
 
 all:
-	$(Q)$(MAKE) -C ./ -f $(srctree)/scripts/Makefile.build
+	$(Q)$(MAKE) $(mbuild)=.
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o
 
 clean:
