@@ -1,0 +1,40 @@
+### 目标
+PHONY := build
+build :
+
+### 清空变量值，避免环境变量干扰
+obj-y       :=
+subdir-y    :=
+
+### 这里是包含遍历时各个子目录的 Makefile
+### 注意看顶层 Makefile 调用此脚本和本脚本自己递归调用自己的用法
+###     顶层: make -C ./ -f $(srctree)/scripts/Makefile.build
+###     递归: make -C $@ -f $(srctree)/scripts/Makefile.build
+### 都是先通过 -C 进入到对应工作目录后，再 -f 调用脚本
+### 因此这里包含的是子目录中的 Makefile
+include Makefile
+
+### 将 obj-y 中所有的子目录目标最后的反斜杠给删除
+__subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
+subdir-y    += $(__subdir-y)
+
+### 将 obj-y 中所有的子目录目标，在子目录下创建 built-in.o 目标
+subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
+
+### 筛选出非目录目标
+cur_objs    := $(filter-out %/, $(obj-y))
+dep_files   := $(foreach f,$(cur_objs),.$(f).d)
+
+PHONY += $(subdir-y)
+
+build : $(subdir-y) built-in.o
+$(subdir-y):
+	make -C $@ -f $(srctree)/scripts/Makefile.build
+
+built-in.o : $(cur_objs) $(subdir_objs)
+	$(LD) -r -o $@ $^
+dep_file = .$@.d
+
+%.o : %.c
+	$(CC) $(CFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+.PHONY : $(PHONY)
