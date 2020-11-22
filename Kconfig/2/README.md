@@ -1,7 +1,7 @@
 ### mconf 工具使用
 
 ```
-./scripts/kconfig/mconf Kconfig
+make menuconfig
 ```
 
 配置结束，配置结果保存在在 `.config` 文件中。

@@ -29,6 +29,9 @@ all:
 	$(Q)$(MAKE) $(mbuild)=.
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o
 
+menuconfig: scripts/kconfig/mconf
+	$< Kconfig
+
 clean:
 	$(Q)$(MAKE) $(mclean)=.
 	rm -f $(TARGET)
