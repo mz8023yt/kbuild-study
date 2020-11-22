@@ -1,2 +1,2 @@
 
-obj-y += b.o
+obj-$(CONFIG_FUNC_B) += b.o

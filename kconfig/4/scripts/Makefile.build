@@ -1,4 +1,5 @@
 include $(srctree)/scripts/Makefile.include
+include include/config/auto.conf
 
 ### 接收参数值，参数值为递归编译目录相对于源码根目录的相对路径
 src         := $(obj)
