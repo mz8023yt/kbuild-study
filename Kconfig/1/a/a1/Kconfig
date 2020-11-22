@@ -1,0 +1,5 @@
+
+config FUNC_A1
+    bool "FUNC_A1"
+    default y
+    depends on FUNC_A
