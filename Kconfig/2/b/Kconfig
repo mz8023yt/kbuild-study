@@ -1,0 +1,12 @@
+
+menuconfig MENU_FUNC_B
+	bool "MENU_FUNC_B"
+	default y
+
+if MENU_FUNC_B
+
+config FUNC_B
+    bool "FUNC_B"
+    default y
+
+endif

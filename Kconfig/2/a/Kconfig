@@ -1,0 +1,13 @@
+menuconfig MENU_FUNC_A
+	bool "MENU_FUNC_A"
+	default y
+
+if MENU_FUNC_A
+
+config FUNC_A
+    bool "FUNC_A"
+    default y
+
+source a/a1/Kconfig
+
+endif
