@@ -25,15 +25,21 @@ obj-y += main.o
 obj-y += a/
 obj-y += b/
 
-all:
+all: autoconf
 	$(Q)$(MAKE) $(mbuild)=.
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o
 
 menuconfig: scripts/kconfig/mconf
-	$< Kconfig
+	$(Q)$< Kconfig
+
+autoconf: scripts/kconfig/conf FORCE
+	mkdir -p include/config
+	mkdir -p include/linux
+	$< -s Kconfig
 
 clean:
 	$(Q)$(MAKE) $(mclean)=.
 	rm -f $(TARGET)
+	rm -rf include
 
 .PHONY:all clean
