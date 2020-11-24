@@ -1,0 +1,58 @@
+include $(srctree)/scripts/Makefile.include
+
+### 接收参数值，参数值为递归编译目录相对于源码根目录的相对路径
+src         := $(obj)
+
+ifneq ($(KBUILD_OUTPUT),)
+out         := $(KBUILD_OUTPUT)/
+$(shell mkdir $(out)$(obj))
+else
+out         :=
+endif
+
+### 将相对路径转化为绝对路径
+kbuild-dir  := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+
+### 目标
+PHONY := build
+build :
+
+### 清空变量值，避免环境变量干扰
+obj-y       :=
+subdir-y    :=
+
+### 包含子目录的 Makefile
+include $(kbuild-dir)/Makefile
+
+### 将 obj-y 中所有的子目录目标最后的反斜杠给删除
+__subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
+subdir-y    += $(strip $(__subdir-y))
+subdir-y    := $(addprefix $(obj)/,$(subdir-y))
+
+### 将 obj-y 中所有的子目录目标，在子目录下创建 built-in.o 目标
+subdir_objs := $(foreach f,$(subdir-y),$(out)$(f)/built-in.o)
+
+### 筛选出非目录目标
+cur_objs    := $(filter-out %/, $(obj-y))
+cur_objs    := $(addprefix $(out)$(obj)/,$(cur_objs))
+
+ifeq ($(mdebug), 1)
+$(info out          = $(out))
+$(info subdir-y     = $(subdir-y))
+$(info subdir_objs  = $(subdir_objs))
+$(info cur_objs     = $(cur_objs))
+endif
+
+PHONY += $(subdir-y)
+
+build : $(subdir-y) $(out)$(obj)/built-in.o
+$(subdir-y):
+	$(Q)$(MAKE) $(mbuild)=$@
+
+$(out)$(obj)/built-in.o : $(cur_objs) $(subdir_objs)
+	$(LD) -r -o $@ $^
+
+$(out)$(obj)/%.o : $(obj)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+.PHONY : $(PHONY)
