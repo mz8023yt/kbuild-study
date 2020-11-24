@@ -29,6 +29,9 @@ all: autoconf
 	$(Q)$(MAKE) $(mbuild)=.
 	$(CC) $(LDFLAGS) -o $(TARGET) built-in.o
 
+%_defconfig: scripts/kconfig/conf FORCE
+	scripts/kconfig/conf -D configs/$@ Kconfig
+
 menuconfig: scripts/kconfig/mconf
 	$(Q)$< Kconfig
 

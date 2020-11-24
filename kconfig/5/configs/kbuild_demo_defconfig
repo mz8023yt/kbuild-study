@@ -1,0 +1,10 @@
+#
+# Automatically generated make config: don't edit
+# Linux kernel version: 
+# Tue Nov 24 11:18:14 2020
+#
+CONFIG_MENU_FUNC_A=y
+CONFIG_FUNC_A=y
+# CONFIG_FUNC_A1 is not set
+CONFIG_MENU_FUNC_B=y
+CONFIG_FUNC_B=y
