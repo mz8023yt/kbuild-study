@@ -1,22 +1,28 @@
-### mconf 工具使用
+# 支持 make xxx_defconfig 加载默认配置文件
+
+用法：
 
 ```
-make menuconfig
-```
-
-配置结束，配置结果保存在在 `.config` 文件中。
-
-```
-paul@maz:~/study/kbuild/Kconfig/1$ cat .config
+paul@maz:~/study/kbuild-study/kconfig/5$ ls configs/
+kbuild_demo_defconfig
+paul@maz:~/study/kbuild-study/kconfig/5$ make kbuild_demo_defconfig
+scripts/kconfig/conf -D configs/kbuild_demo_defconfig Kconfig
+*
+* Linux Kernel Configuration
+*
+*
+* MENU_FUNC_A
+*
+MENU_FUNC_A (MENU_FUNC_A) [Y/n] y
+  FUNC_A (FUNC_A) [Y/n] y
+    FUNC_A1 (FUNC_A1) [N/y] n
+*
+* MENU_FUNC_B
+*
+MENU_FUNC_B (MENU_FUNC_B) [Y/n] y
+  FUNC_B (FUNC_B) [Y/n] y
 #
-# Automatically generated make config: don't edit
-# Linux kernel version: 
-# Sun Nov 22 22:03:50 2020
+# configuration written to .config
 #
-CONFIG_MENU_FUNC_A=y
-CONFIG_FUNC_A=y
-# CONFIG_FUNC_A1 is not set
-CONFIG_MENU_FUNC_B=y
-CONFIG_FUNC_B=y
 ```
 
