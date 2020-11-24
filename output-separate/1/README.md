@@ -89,7 +89,7 @@ paul@maz:~/study/kbuild-study/output-separate/1$ tree
 paul@maz:~/study/kbuild-study/output-separate/1$
 ```
 
-## 通过 O 参数指定输出路径。
+### 通过 O 参数指定输出路径。
 
 通过 O 参数指定输出路径为 output 目录。
 
@@ -107,7 +107,7 @@ ld -r -o /home/paul/study/kbuild-study/output-separate/1/output/./built-in.o /ho
 gcc  -o /home/paul/study/kbuild-study/output-separate/1/output/app /home/paul/study/kbuild-study/output-separate/1/output/built-in.o
 ```
 
-编译后成果物全部存放在 output 对应目录结构中。
+编译后成果物全部存放在 output 对应目录结构中。保持源码目录干净整洁。
 
 ```
 paul@maz:~/study/kbuild-study/output-separate/1$ tree
