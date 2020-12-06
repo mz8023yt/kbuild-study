@@ -12,22 +12,19 @@ Kbuild 在递归编译子目录的时候，是通过遍历得到的各级子目�
 
 ## 用法
 
-执行
-
 ```
-paul@maz:~/study/kbuild-study/make-f-param$ make
+paul@maz:~/study/kbuild-study/2.make-f-param/1.parameter-passing$ make
  --------------- top makefile print start ---------------
 make -f scripts/Makefile.build param0=val0
-make[1]: Entering directory '/home/paul/study/kbuild-study/make-f-param'
+make[1]: Entering directory '/home/paul/study/kbuild-study/2.make-f-param/1.parameter-passing'
 echo val0
 val0
 echo val1
 val1
 echo 
 
-make[1]: Leaving directory '/home/paul/study/kbuild-study/make-f-param'
+make[1]: Leaving directory '/home/paul/study/kbuild-study/2.make-f-param/1.parameter-passing'
  ---------------- top makefile print end ----------------
+paul@maz:~/study/kbuild-study/2.make-f-param/1.parameter-passing$
 ```
-
-
 

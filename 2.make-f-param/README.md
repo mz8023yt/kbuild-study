@@ -1,15 +1,14 @@
 # 目录结构说明
 
 ```
-paul@maz:~/study/kbuild-study/make-f-param$ tree
+paul@maz:~/study/kbuild-study/2.make-f-param$ tree -Ld 1
 .
-├── 1		// 验证 make -f 调用其它 Makefile 时几种参数传递的方法。
-│   ├── Makefile
-│   ├── README.md
-│   └── scripts
-│       └── Makefile.build
-└── README.md
+└── 1.parameter-passing
 
-2 directories, 4 files
+1 directory
+paul@maz:~/study/kbuild-study/2.make-f-param$
 ```
 
+说明：
+
+- 1.parameter-passing 验证 make -f 调用其它 Makefile 时几种参数传递的方法。
