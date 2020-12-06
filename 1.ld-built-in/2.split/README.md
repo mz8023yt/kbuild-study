@@ -13,20 +13,16 @@
 
 ## 用法
 
-编译
-
 ```
-paul@maz:~/study/kbuild-study/ld-built-in/2$ make
+paul@maz:~/study/kbuild-study/1.ld-built-in/2.split$ make
 gcc -o main.o -c main.c
 gcc -o printf.o -c printf.c
 ld -r -s -o built-in.o main.o printf.o
 gcc -o app built-in.o
-```
-
-清除
-
-```
-paul@maz:~/study/kbuild-study/ld-built-in/2$ make clean
+paul@maz:~/study/kbuild-study/1.ld-built-in/2.split$ make clean 
 rm -rf app *.o
+paul@maz:~/study/kbuild-study/1.ld-built-in/2.split$
 ```
+
+
 
