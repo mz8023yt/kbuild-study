@@ -16,43 +16,32 @@
 - 【完成100%】实现编译输出打印美化，支持V=1动态控制。
 - 【完成100%】实现编译成果物输出到单独的目录。
 - 【完成100%】熟悉Kconconfig语法，菜单，功能项，依赖关系等。
-- 【完成100%】实现编译工具源码得到 conf、mconf 等主机程序。
 - 【完成100%】移植并使用mconf工具生成 .config 配置文件，支持make menuconfig配置。
 - 【完成100%】实现 .config 文件自动创建 auto.conf 和 autoconf.h 配置文件。
-- 【完成 50%】基于 auto.conf 和 autoconf.h 文件实现功能裁剪。
+- 【完成 100%】基于 auto.conf 和 autoconf.h 文件实现功能裁剪。
+- 【完成100%】实现编译工具源码得到 conf、mconf 等主机程序。
 - 【未完成】优化依赖关系。
-- 一步一步整合上述功能，实现一个类似于 Kernel 的编译框架。
+- 【未完成】一步一步整合上述功能，实现一个类似于 Kernel 的编译框架。
 
 ## 目录结构说明
 
 目前已经实现的 Kbuild 编译框架 demo 工程如下。
 
 ```
-paul@maz:~/study/kbuild-study$ tree -Ld 2
+paul@maz:~/study/kbuild-study$ tree -Ld 1
 .
-├── ld-built-in			// 多个o文件链接为一个built-in.o文件
-│   ├── 1					// 最简单的编译方式
-│   └── 2					// 编译过程拆解 c->o; 多个o->built-in.o; built-in.o->app
-├── make-f-param			// make -f 方式下参数传递形式
-│   └── 1					// 环境变量和动态参数方式可传递
-├── recursive-link		// 递归子目录进行编译, 实现 Kconfig Makefile 语法支持
-│   ├── 1					// make -C && make -f 方式实现递归编译
-│   ├── 2					// 删除 make -C 和 make -f 提示进入目录，离开目录的编译打印信息
-│   ├── 3					// make -f scripts/Makefile.build obj=(dir) 方式实现递归编译(Kernel同款实现)
-│   └── 4					// make clean 支持递归删除编译中间
-├── 4.kconfig			// 编译层面进行功能裁剪
-│   ├── 1					// 实现解析 Kconfig 文件生成 .config 配置文件
-│   ├── 2					// 实现 make menuconfig 目标, 支持图形界面配置裁剪功能项
-│   ├── 3					// 实现通过 .config 配置文件自动创建 auto.conf 和 autoconf.h 文件
-│   └── 4					// 实现 Makefile 通过包含 auto.conf 配置文件, 基于 Kconfig Makefile 语法进行功能裁剪
-└── 5.beautify-output	// 美化编译输出
-    ├── 1					// 基于最简单的 Makefile, 手动美化输出, 未进行封装
-    ├── 2					// 基于改进版的 Makefile, 手动美化输出, 未进行封装
-    ├── 3					// 针对 make clean 输出美化功能进行封装, 支持 make clean V=1 显示未美化命令
-    └── 4					// 针对 make 命令输出美化功能进行封装, 支持 make V=1
+├── 1.ld-built-in			// 多个o文件链接为一个built-in.o文件
+├── 2.make-f-param			// 调用其他 Makefile 时传参方式验证
+├── 3.recursive-link		// 递归子目录进行编译, 实现 Kconfig Makefile 语法支持
+├── 4.output-separate		// 中间产物和成果物输出到指定路径
+├── 5.beautify-output		// 美化编译输出
+├── 6.kconfig				// 编译层面进行功能裁剪，实现 Kconfig 语法解析，menuconfig 支持
+└── 7.host-prog				// 主机程序源码，编译得到 conf 和 mconf 主机程序
 
-20 directories
+7 directories
 paul@maz:~/study/kbuild-study$
 ```
+
+一级目录说明如上，其下的二级目录都附有对应的目录结构说明。请进入子目录查阅。
 
 
