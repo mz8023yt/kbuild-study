@@ -9,7 +9,7 @@
 编译前目录结构：
 
 ```
-paul@maz:~/study/kbuild-study/output-separate/1$ tree
+paul@maz:~/study/kbuild-study/4.output-separate/1.separate$ tree
 .
 ├── a
 │   ├── a1
@@ -38,7 +38,7 @@ paul@maz:~/study/kbuild-study/output-separate/1$ tree
 使用 `make` 命令进行编译。
 
 ```
-paul@maz:~/study/kbuild-study/output-separate/1$ make 
+paul@maz:~/study/kbuild-study/4.output-separate/1.separate$ make
 gcc -Wall -O2 -g -c -o a/a1/a1.o a/a1/a1.c
 ld -r -o a/a1/built-in.o a/a1/a1.o
 gcc -Wall -O2 -g -c -o a/a.o a/a.c
@@ -53,7 +53,7 @@ gcc  -o app built-in.o
 编译结束后，中间文件和成果物位于源码对应目录中。
 
 ```
-paul@maz:~/study/kbuild-study/output-separate/1$ tree
+paul@maz:~/study/kbuild-study/4.output-separate/1.separate$ tree
 .
 ├── a
 │   ├── a1
@@ -86,7 +86,6 @@ paul@maz:~/study/kbuild-study/output-separate/1$ tree
     └── Makefile.include
 
 4 directories, 25 files
-paul@maz:~/study/kbuild-study/output-separate/1$
 ```
 
 ### 通过 O 参数指定输出路径。
@@ -94,23 +93,24 @@ paul@maz:~/study/kbuild-study/output-separate/1$
 通过 O 参数指定输出路径为 output 目录。
 
 ```
-paul@maz:~/study/kbuild-study/output-separate/1$ make O=output
-mkdir: cannot create directory ‘/home/paul/study/kbuild-study/output-separate/1/output/.’: File exists
-gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/output-separate/1/output/a/a1/a1.o a/a1/a1.c
-ld -r -o /home/paul/study/kbuild-study/output-separate/1/output/a/a1/built-in.o /home/paul/study/kbuild-study/output-separate/1/output/a/a1/a1.o
-gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/output-separate/1/output/a/a.o a/a.c
-ld -r -o /home/paul/study/kbuild-study/output-separate/1/output/a/built-in.o /home/paul/study/kbuild-study/output-separate/1/output/a/a.o /home/paul/study/kbuild-study/output-separate/1/output/a/a1/built-in.o
-gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/output-separate/1/output/b/b.o b/b.c
-ld -r -o /home/paul/study/kbuild-study/output-separate/1/output/b/built-in.o /home/paul/study/kbuild-study/output-separate/1/output/b/b.o
-gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/output-separate/1/output/./main.o main.c
-ld -r -o /home/paul/study/kbuild-study/output-separate/1/output/./built-in.o /home/paul/study/kbuild-study/output-separate/1/output/./main.o /home/paul/study/kbuild-study/output-separate/1/output/./a/built-in.o /home/paul/study/kbuild-study/output-separate/1/output/./b/built-in.o
-gcc  -o /home/paul/study/kbuild-study/output-separate/1/output/app /home/paul/study/kbuild-study/output-separate/1/output/built-in.o
+paul@maz:~/study/kbuild-study/4.output-separate/1.separate$ make O=output
+mkdir: cannot create directory ‘/home/paul/study/kbuild-study/4.output-separate/1.separate/output/.’: File exists
+gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/a1/a1.o a/a1/a1.c
+ld -r -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/a1/built-in.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/a1/a1.o
+gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/a.o a/a.c
+ld -r -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/built-in.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/a.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/a/a1/built-in.o
+gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/b/b.o b/b.c
+ld -r -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/b/built-in.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/b/b.o
+gcc -Wall -O2 -g -c -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/./main.o main.c
+ld -r -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/./built-in.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/./main.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/./a/built-in.o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/./b/built-in.o
+gcc  -o /home/paul/study/kbuild-study/4.output-separate/1.separate/output/app /home/paul/study/kbuild-study/4.output-separate/1.separate/output/built-in.o
+paul@maz:~/study/kbuild-study/4.output-separate/1.separate$
 ```
 
 编译后成果物全部存放在 output 对应目录结构中。保持源码目录干净整洁。
 
 ```
-paul@maz:~/study/kbuild-study/output-separate/1$ tree
+paul@maz:~/study/kbuild-study/4.output-separate/1.separate$ tree
 .
 ├── a
 │   ├── a1
@@ -149,4 +149,4 @@ paul@maz:~/study/kbuild-study/output-separate/1$ tree
 8 directories, 25 files
 ```
 
-注意：使用 O 参数指定输出路径后，make clean 也需要指定，不然 clean 的时候不知道该 clean 哪里。
+注意：使用 O 参数指定输出路径后，make clean 也需要指定，不然 clean 的时候不知道该 clean 哪里。tree
