@@ -4,7 +4,7 @@
 paul@maz:~/study/kbuild-study/1.ld-built-in$ tree -Ld 1
 .
 ├── 1.simple
-└── 
+└── 2.split
 
 2 directories
 paul@maz:~/study/kbuild-study/1.ld-built-in$
