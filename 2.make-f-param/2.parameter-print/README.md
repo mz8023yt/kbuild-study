@@ -1,30 +1,55 @@
-# make -f 传参验证
+# makefile 调试手段
 
-Kbuild 在递归编译子目录的时候，是通过遍历得到的各级子目录作为参数传递给 scripts/Makefile.build 通用编译规则进行编译，因为有必要研究下 make -f 调用其他 Makefile 时，参数传递的机制。
+Makefile 提供调试打印函数 info、warning、error 函数。
+其中 error 函数除了打印报错信息以外，还会终止 make 编译过程。
 
-本示例是验证几种传参方式的是否能够正确传递。
+```
+### 打印提示信息, 打印参数指定的字符串
+$(info --------------------- 1 --------------------)
+$(info here is Makefile info!\n)
 
-结论如下：
+### 打印调试信息, 相比于 info 多 打印 Makefile 具体的文件名和行号
+$(info --------------------- 2 --------------------)
+$(warning here is Makefile warning!)
 
-- param0，make -f 调试用传参
-- param1，导出为环境变量传参
-- param2，传递失败
+### 打印错误信息, 并停止 Makefile 解析执行流程
+$(info --------------------- 3 --------------------)
+$(error "here is Makefile error!")
+
+### 这里不会打印
+$(info --------------------- 4 --------------------)
+```
 
 ## 用法
 
 ```
-paul@maz:~/study/kbuild-study/2.make-f-param/1.parameter-passing$ make
- --------------- top makefile print start ---------------
-make -f scripts/Makefile.build param0=val0
-make[1]: Entering directory '/home/paul/study/kbuild-study/2.make-f-param/1.parameter-passing'
-echo val0
-val0
-echo val1
-val1
-echo 
-
-make[1]: Leaving directory '/home/paul/study/kbuild-study/2.make-f-param/1.parameter-passing'
- ---------------- top makefile print end ----------------
-paul@maz:~/study/kbuild-study/2.make-f-param/1.parameter-passing$
+paul@vmware:~/kbuild-study/2.make-f-param/2.parameter-print$ make
+--------------------- 1 --------------------
+here is Makefile info!\n
+--------------------- 2 --------------------
+Makefile:7: here is Makefile warning!
+--------------------- 3 --------------------
+Makefile:11: *** "here is Makefile error!".  Stop.
+paul@vmware:~/kbuild-study/2.make-f-param/2.parameter-print$ 
 ```
 
+## 学习总结
+
+### 1. 打印函数后面不需要加双引号
+
+```
+$(info --------------------- 2 --------------------)
+$(warning here is Makefile warning!)
+```
+
+都是直接打印的，不需要双引号，有空格也没有关系。
+
+### 2. 打印函数无法解析转义字符
+
+```
+### 打印提示信息, 打印参数指定的字符串
+$(info --------------------- 1 --------------------)
+$(info here is Makefile info!\n)
+```
+
+不难发现，\n 还是 \n，并没有转义为换行符。

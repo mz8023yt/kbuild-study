@@ -1,7 +1,14 @@
-export param1 := val1
-param2 := val2
+### 打印提示信息, 打印参数指定的字符串
+$(info --------------------- 1 --------------------)
+$(info here is Makefile info!\n)
 
-all:
-	@echo " --------------- top makefile print start ---------------"
-	make -f scripts/Makefile.build param0=val0
-	@echo " ---------------- top makefile print end ----------------"
+### 打印调试信息, 相比于 info 多 打印 Makefile 具体的文件名和行号
+$(info --------------------- 2 --------------------)
+$(warning here is Makefile warning!)
+
+### 打印错误信息, 并停止 Makefile 解析执行流程
+$(info --------------------- 3 --------------------)
+$(error "here is Makefile error!")
+
+### 这里不会打印
+$(info --------------------- 4 --------------------)
