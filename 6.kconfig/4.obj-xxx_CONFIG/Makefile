@@ -18,12 +18,16 @@ export CFLAGS LDFLAGS
 srctree         := $(shell pwd)
 export srctree
 include $(srctree)/scripts/Makefile.include
+-include include/config/auto.conf
 
 TARGET := app
 
 obj-y += main.o
-obj-y += a/
-obj-y += b/
+obj-$(CONFIG_MENU_FUNC_A) += a/
+obj-$(CONFIG_MENU_FUNC_B) += b/
+
+# $(info 111 >>> obj-$(CONFIG_MENU_FUNC_A))
+# $(info 222 >>> obj-$(CONFIG_MENU_FUNC_B))
 
 all: autoconf
 	$(Q)$(MAKE) $(mbuild)=.
