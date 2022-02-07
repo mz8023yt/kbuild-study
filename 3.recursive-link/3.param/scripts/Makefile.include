@@ -1,7 +1,7 @@
-mdebug      := 0
-mbuild := -f $(srctree)/scripts/Makefile.build obj
+mdebug          := 0
+mbuild          := -f $(srctree)/scripts/Makefile.build obj
 
-MAKE        := make --no-print-directory
-Q           := @
+MAKE            := make --no-print-directory
+Q               := @
 
 .PHONY: FORCE

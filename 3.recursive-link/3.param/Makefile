@@ -34,4 +34,4 @@ clean:
 	rm -f $(shell find -name "*.d")
 	rm -f $(TARGET)
 
-.PHONY:all clean
+.PHONY: clean

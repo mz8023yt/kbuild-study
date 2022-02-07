@@ -1,53 +1,61 @@
 include $(srctree)/scripts/Makefile.include
 
 ### 接收参数值，参数值为递归编译目录相对于源码根目录的相对路径
-src         := $(obj)
+src             := $(obj)
 
 ### 将相对路径转化为绝对路径
-kbuild-dir  := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+kbuild-dir      := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
 
-### 目标
-PHONY := build
-build :
+### 定义一个强制目标, 默认构建这个目标
+build           :
 
 ### 清空变量值，避免环境变量干扰
-obj-y       :=
-subdir-y    :=
+obj-y           :=
 
 ### 包含子目录的 Makefile
 include $(kbuild-dir)/Makefile
 
 ### 将 obj-y 中所有的子目录目标最后的反斜杠给删除
+### filter 过滤函数, 将 $(obj-y) 中所有以 / 结尾的字符串过滤出来, 说白了就是找出目录
+### patsubst 模式字符串替换函数, 将所有以 / 结尾的字符串最后的 / 给去掉
+### strip 去空格函数, 去掉字串中开头和结尾的空字符
+### addprefix 加前缀函数, 补全完整的相对路径
 __subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
-subdir-y    += $(strip $(__subdir-y))
+subdir-y    := $(strip $(__subdir-y))
 subdir-y    := $(addprefix $(obj)/,$(subdir-y))
 
 ### 将 obj-y 中所有的子目录目标，在子目录下创建 built-in.o 目标
+### foreach 循环函数, 依次取出上面找到的目录目标 $(subdir-y) 中的每一个元素, 创建 xxx/built-in.o 目标
 subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
 
 ### 筛选出非目录目标
+### filter-out 反过滤函数, 将 $(obj-y) 中不是 / 结尾的目标找出来
+### addprefix 加前缀函数, 补全完整的相对路径
 cur_objs    := $(filter-out %/, $(obj-y))
 cur_objs    := $(addprefix $(obj)/,$(cur_objs))
-dep_files   := $(foreach f,$(cur_objs),.$(f).d)
 
+### 调试打印信息
+### 通过修改 Makefile.include 文件中的 mdebug 的值为 1 启用
 ifeq ($(mdebug), 1)
 $(info $(obj):1 $(subdir-y))
 $(info $(obj):2 $(subdir_objs))
 $(info $(obj):3 $(cur_objs))
-$(info $(obj):4 $(dep_files))
 endif
 
-PHONY += $(subdir-y)
-
+### build 目标依赖于子目录目标(伪目标)和当前目录的 built-in.o 目标
+### 子目录伪目标目的是生成 xxx/built-in.o, 这里形成了递归
 build : $(subdir-y) $(obj)/built-in.o
 $(subdir-y):
 	$(Q)$(MAKE) $(mbuild)=$@
 
+### 非目录目标链接为 built-in.o
 $(obj)/built-in.o : $(cur_objs) $(subdir_objs)
 	$(LD) -r -o $@ $^
-dep_file = ./$@.d
 
+### 当前目录下的目标文件为 obj-y = xxx.o, 由 .c 生成 .o 需要用到这个规则
+### 同时创建 .d 依赖文件, 具体可以参考 https://blog.csdn.net/jeffasd/article/details/83414493
 $(obj)/%.o : $(obj)/%.c
-	$(CC) $(CFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+	$(CC) $(CFLAGS) -Wp,-MD,./$@.d -c -o $@ $<
 
-.PHONY : $(PHONY)
+### 将之前创建的目标, 正式的定义为伪目标
+.PHONY : build $(subdir-y)

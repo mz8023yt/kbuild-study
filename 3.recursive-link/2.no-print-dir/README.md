@@ -5,7 +5,7 @@
 ## 用法
 
 ```
-paul@maz:~/study/kbuild-study/3.recursive-link/2.no-print-dir$ make
+$ make
 gcc -Wall -O2 -g -Wp,-MD,.a1.o.d -c -o a1.o a1.c
 ld -r -o built-in.o a1.o
 gcc -Wall -O2 -g -Wp,-MD,.a.o.d -c -o a.o a.c
@@ -15,17 +15,17 @@ ld -r -o built-in.o b.o
 gcc -Wall -O2 -g -Wp,-MD,.main.o.d -c -o main.o main.c
 ld -r -o built-in.o main.o a/built-in.o b/built-in.o
 gcc  -o app built-in.o
-paul@maz:~/study/kbuild-study/3.recursive-link/2.no-print-dir$ make clean
+
+$ make clean
 rm -f ./main.o ./b/b.o ./b/built-in.o ./built-in.o ./a/built-in.o ./a/a1/built-in.o ./a/a1/a1.o ./a/a.o
 rm -f ./b/.b.o.d ./.main.o.d ./a/.a.o.d ./a/a1/.a1.o.d
 rm -f app
-paul@maz:~/study/kbuild-study/3.recursive-link/2.no-print-dir$
 ```
 
 这是没有添加 `--no-print-directory` 选项的打印输出。
 
 ```
-paul@maz:~/study/kbuild-study/3.recursive-link/1.subdir$ make
+$ make
 make -C ./ -f /home/paul/study/kbuild-study/3.recursive-link/1.subdir/scripts/Makefile.build
 make[1]: Entering directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir'
 make -C a -f /home/paul/study/kbuild-study/3.recursive-link/1.subdir/scripts/Makefile.build
@@ -47,12 +47,9 @@ gcc -Wall -O2 -g -Wp,-MD,.main.o.d -c -o main.o main.c
 ld -r -o built-in.o main.o a/built-in.o b/built-in.o
 make[1]: Leaving directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir'
 gcc  -o app built-in.o
-paul@maz:~/study/kbuild-study/3.recursive-link/1.subdir$ make clean
+
+$ make clean
 rm -f ./main.o ./b/b.o ./b/built-in.o ./built-in.o ./a/built-in.o ./a/a1/built-in.o ./a/a1/a1.o ./a/a.o
 rm -f ./b/.b.o.d ./.main.o.d ./a/.a.o.d ./a/a1/.a1.o.d
 rm -f app
-paul@maz:~/study/kbuild-study/3.recursive-link/1.subdir$
 ```
-
-
-
