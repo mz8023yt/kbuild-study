@@ -1,31 +1,31 @@
 include $(srctree)/scripts/Makefile.include
 
-### ½ÓÊÕ²ÎÊıÖµ£¬²ÎÊıÖµÎªµİ¹é±àÒëÄ¿Â¼Ïà¶ÔÓÚÔ´Âë¸ùÄ¿Â¼µÄÏà¶ÔÂ·¾¶
+### æ¥æ”¶å‚æ•°å€¼ï¼Œå‚æ•°å€¼ä¸ºé€’å½’ç¼–è¯‘ç›®å½•ç›¸å¯¹äºæºç æ ¹ç›®å½•çš„ç›¸å¯¹è·¯å¾„
 src         := $(obj)
 
-### ½«Ïà¶ÔÂ·¾¶×ª»¯Îª¾ø¶ÔÂ·¾¶
+### å°†ç›¸å¯¹è·¯å¾„è½¬åŒ–ä¸ºç»å¯¹è·¯å¾„
 kbuild-dir  := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
 
-### Ä¿±ê
+### ç›®æ ‡
 PHONY := build
 build :
 
-### Çå¿Õ±äÁ¿Öµ£¬±ÜÃâ»·¾³±äÁ¿¸ÉÈÅ
+### æ¸…ç©ºå˜é‡å€¼ï¼Œé¿å…ç¯å¢ƒå˜é‡å¹²æ‰°
 obj-y       :=
 subdir-y    :=
 
-### °üº¬×ÓÄ¿Â¼µÄ Makefile
+### åŒ…å«å­ç›®å½•çš„ Makefile
 include $(kbuild-dir)/Makefile
 
-### ½« obj-y ÖĞËùÓĞµÄ×ÓÄ¿Â¼Ä¿±ê×îºóµÄ·´Ğ±¸Ü¸øÉ¾³ı
+### å°† obj-y ä¸­æ‰€æœ‰çš„å­ç›®å½•ç›®æ ‡æœ€åçš„åæ–œæ ç»™åˆ é™¤
 __subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
 subdir-y    += $(strip $(__subdir-y))
 subdir-y    := $(addprefix $(obj)/,$(subdir-y))
 
-### ½« obj-y ÖĞËùÓĞµÄ×ÓÄ¿Â¼Ä¿±ê£¬ÔÚ×ÓÄ¿Â¼ÏÂ´´½¨ built-in.o Ä¿±ê
+### å°† obj-y ä¸­æ‰€æœ‰çš„å­ç›®å½•ç›®æ ‡ï¼Œåœ¨å­ç›®å½•ä¸‹åˆ›å»º built-in.o ç›®æ ‡
 subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
 
-### É¸Ñ¡³ö·ÇÄ¿Â¼Ä¿±ê
+### ç­›é€‰å‡ºéç›®å½•ç›®æ ‡
 cur_objs    := $(filter-out %/, $(obj-y))
 cur_objs    := $(addprefix $(obj)/,$(cur_objs))
 dep_files   := $(foreach f,$(cur_objs),.$(f).d)

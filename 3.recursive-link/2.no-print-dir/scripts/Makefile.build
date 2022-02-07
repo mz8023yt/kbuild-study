@@ -1,29 +1,29 @@
 include $(srctree)/scripts/Makefile.include
 
-### Ä¿±ê
+### ç›®æ ‡
 PHONY := build
 build :
 
-### Çå¿Õ±äÁ¿Öµ£¬±ÜÃâ»·¾³±äÁ¿¸ÉÈÅ
+### æ¸…ç©ºå˜é‡å€¼ï¼Œé¿å…ç¯å¢ƒå˜é‡å¹²æ‰°
 obj-y       :=
 subdir-y    :=
 
-### ÕâÀïÊÇ°üº¬±éÀúÊ±¸÷¸ö×ÓÄ¿Â¼µÄ Makefile
-### ×¢Òâ¿´¶¥²ã Makefile µ÷ÓÃ´Ë½Å±¾ºÍ±¾½Å±¾×Ô¼ºµİ¹éµ÷ÓÃ×Ô¼ºµÄÓÃ·¨
-###     ¶¥²ã: make -C ./ -f $(srctree)/scripts/Makefile.build
-###     µİ¹é: make -C $@ -f $(srctree)/scripts/Makefile.build
-### ¶¼ÊÇÏÈÍ¨¹ı -C ½øÈëµ½¶ÔÓ¦¹¤×÷Ä¿Â¼ºó£¬ÔÙ -f µ÷ÓÃ½Å±¾
-### Òò´ËÕâÀï°üº¬µÄÊÇ×ÓÄ¿Â¼ÖĞµÄ Makefile
+### è¿™é‡Œæ˜¯åŒ…å«éå†æ—¶å„ä¸ªå­ç›®å½•çš„ Makefile
+### æ³¨æ„çœ‹é¡¶å±‚ Makefile è°ƒç”¨æ­¤è„šæœ¬å’Œæœ¬è„šæœ¬è‡ªå·±é€’å½’è°ƒç”¨è‡ªå·±çš„ç”¨æ³•
+###     é¡¶å±‚: make -C ./ -f $(srctree)/scripts/Makefile.build
+###     é€’å½’: make -C $@ -f $(srctree)/scripts/Makefile.build
+### éƒ½æ˜¯å…ˆé€šè¿‡ -C è¿›å…¥åˆ°å¯¹åº”å·¥ä½œç›®å½•åï¼Œå† -f è°ƒç”¨è„šæœ¬
+### å› æ­¤è¿™é‡ŒåŒ…å«çš„æ˜¯å­ç›®å½•ä¸­çš„ Makefile
 include Makefile
 
-### ½« obj-y ÖĞËùÓĞµÄ×ÓÄ¿Â¼Ä¿±ê×îºóµÄ·´Ğ±¸Ü¸øÉ¾³ı
+### å°† obj-y ä¸­æ‰€æœ‰çš„å­ç›®å½•ç›®æ ‡æœ€åçš„åæ–œæ ç»™åˆ é™¤
 __subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
 subdir-y    += $(strip $(__subdir-y))
 
-### ½« obj-y ÖĞËùÓĞµÄ×ÓÄ¿Â¼Ä¿±ê£¬ÔÚ×ÓÄ¿Â¼ÏÂ´´½¨ built-in.o Ä¿±ê
+### å°† obj-y ä¸­æ‰€æœ‰çš„å­ç›®å½•ç›®æ ‡ï¼Œåœ¨å­ç›®å½•ä¸‹åˆ›å»º built-in.o ç›®æ ‡
 subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
 
-### É¸Ñ¡³ö·ÇÄ¿Â¼Ä¿±ê
+### ç­›é€‰å‡ºéç›®å½•ç›®æ ‡
 cur_objs    := $(filter-out %/, $(obj-y))
 dep_files   := $(foreach f,$(cur_objs),.$(f).d)
 
