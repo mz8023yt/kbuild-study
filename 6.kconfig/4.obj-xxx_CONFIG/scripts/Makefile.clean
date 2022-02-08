@@ -1,5 +1,5 @@
 include $(srctree)/scripts/Makefile.include
-include include/config/auto.conf
+-include include/config/auto.conf
 
 src := $(obj)
 kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
@@ -31,10 +31,10 @@ endif
 
 PHONY += $(subdir-y)
 
-__clean : $(subdir-y) 
+__clean : $(subdir-y)
 	rm -rf $(cur_objs) $(dep_files) $(obj)/built-in.o
 
 $(subdir-y):
 	$(Q)$(MAKE) $(mclean)=$@
 
-.PHONY : $(PHONY)  
+.PHONY : $(PHONY)

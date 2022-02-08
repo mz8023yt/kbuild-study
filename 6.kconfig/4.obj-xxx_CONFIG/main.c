@@ -14,15 +14,15 @@ int main()
 {
     main_print();
 
-#if (defined CONFIG_MENU_FUNC_A)
+#if (defined CONFIG_FUNC_A)
     a_print();
 #endif
 
-#if (defined CONFIG_MENU_FUNC_A)
+#if (defined CONFIG_FUNC_A1)
     a1_print();
 #endif
 
-#if (defined CONFIG_MENU_FUNC_A)
+#if (defined CONFIG_MENU_FUNC_B)
     b_print();
 #endif
 
