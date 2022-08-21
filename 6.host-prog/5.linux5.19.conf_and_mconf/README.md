@@ -2,6 +2,10 @@
 
 基于 `kbuild-study/7.host-prog/2.conf.optimize` 和 `/kbuild-study/7.host-prog/3.mconf` 程序基础上，将两个工具组合起来，集成到一个工程中。
 
+```
+sudo apt-get install libncursesw5-dev
+```
+
 ## 用法
 
 ```
