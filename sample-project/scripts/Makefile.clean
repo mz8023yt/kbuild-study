@@ -1,6 +1,24 @@
 include $(srctree)/scripts/Makefile.include
 -include include/config/auto.conf
 
+#
+# simplified printing information
+#
+ifeq ("$(origin V)", "command line")
+  KBUILD_VERBOSE = $(V)
+endif
+ifndef KBUILD_VERBOSE
+  KBUILD_VERBOSE = 0
+endif
+
+ifeq ($(KBUILD_VERBOSE),1)
+  quiet =
+  Q =
+else
+  quiet=quiet_
+  Q = @
+endif
+
 src := $(obj)
 kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
 
@@ -20,21 +38,20 @@ cur_objs := $(filter-out %/, $(obj-y))
 cur_objs := $(addprefix $(obj)/,$(cur_objs))
 dep_files := $(foreach f,$(cur_objs),$(f).d)
 
-ifeq ($(mdebug), 1)
-$(info 1. $(obj))
-$(info 2. $(kbuild-dir))
-$(info 3. $(subdir-y))
-$(info 4. $(subdir_objs))
-$(info 5. $(cur_objs))
-$(info 6. $(dep_files))
-endif
-
 PHONY += $(subdir-y)
 
 __clean : $(subdir-y)
-	rm -rf $(cur_objs) $(dep_files) $(obj)/built-in.o
+	$(call cmd,clean)
 
 $(subdir-y):
 	$(Q)$(MAKE) $(mclean)=$@
 
 .PHONY : $(PHONY)
+
+#
+# simplified printing information
+#
+quiet_cmd_clean    = CLEAN   $(obj)
+      cmd_clean    = rm -rf $(cur_objs) $(dep_files) $(obj)/built-in.o
+
+cmd = @$(if $($(quiet)cmd_$(1)),echo '  $($(quiet)cmd_$(1))' &&) $(cmd_$(1))

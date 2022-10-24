@@ -1,54 +1,80 @@
 include $(srctree)/scripts/Makefile.include
 -include include/config/auto.conf
 
-### 接收参数值，参数值为递归编译目录相对于源码根目录的相对路径
-src         := $(obj)
+#
+# simplified printing information
+#
+ifeq ("$(origin V)", "command line")
+  KBUILD_VERBOSE = $(V)
+endif
+ifndef KBUILD_VERBOSE
+  KBUILD_VERBOSE = 0
+endif
 
-### 将相对路径转化为绝对路径
+ifeq ($(KBUILD_VERBOSE),1)
+  quiet =
+  Q =
+else
+  quiet=quiet_
+  Q = @
+endif
+
+#
+# specify the output path
+#
+ifneq ($(KBUILD_OUTPUT),)
+out         := $(KBUILD_OUTPUT)/
+$(shell mkdir -p $(out)$(obj))
+else
+out         :=
+endif
+
+#
+# recursive compilation
+#
+src		:= $(obj)
+
 kbuild-dir  := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
 
-### 目标
 PHONY := build
 build :
 
-### 清空变量值，避免环境变量干扰
-obj-y       :=
-subdir-y    :=
+obj-y		:=
+subdir-y	:=
 
-### 包含子目录的 Makefile
 include $(kbuild-dir)/Makefile
 
-### 将 obj-y 中所有的子目录目标最后的反斜杠给删除
-__subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
-subdir-y    += $(strip $(__subdir-y))
-subdir-y    := $(addprefix $(obj)/,$(subdir-y))
-
-### 将 obj-y 中所有的子目录目标，在子目录下创建 built-in.o 目标
-subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
-
-### 筛选出非目录目标
-cur_objs    := $(filter-out %/, $(obj-y))
-cur_objs    := $(addprefix $(obj)/,$(cur_objs))
-dep_files   := $(foreach f,$(cur_objs),.$(f).d)
-
-ifeq ($(mdebug), 1)
-$(info $(obj):1 $(subdir-y))
-$(info $(obj):2 $(subdir_objs))
-$(info $(obj):3 $(cur_objs))
-$(info $(obj):4 $(dep_files))
-endif
+__subdir-y	:= $(patsubst %/,%,$(filter %/, $(obj-y)))
+subdir-y	+= $(strip $(__subdir-y))
+subdir-y	:= $(addprefix $(obj)/,$(subdir-y))
+subdir_objs	:= $(foreach f,$(subdir-y),$(out)$(f)/built-in.o)
+cur_objs	:= $(filter-out %/, $(obj-y))
+cur_objs	:= $(addprefix $(out)$(obj)/,$(cur_objs))
+dep_files	:= $(foreach f,$(cur_objs),.$(f).d)
 
 PHONY += $(subdir-y)
 
-build : $(subdir-y) $(obj)/built-in.o
+build : $(subdir-y) $(out)$(obj)/built-in.o
 $(subdir-y):
 	$(Q)$(MAKE) $(mbuild)=$@
 
-$(obj)/built-in.o : $(cur_objs) $(subdir_objs)
-	$(LD) -r -o $@ $^
-dep_file = ./$@.d
+$(out)$(obj)/built-in.o : $(cur_objs) $(subdir_objs)
+	$(call cmd,ld)
 
-$(obj)/%.o : $(obj)/%.c
-	$(CC) $(CFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+dep_file = $@.d
+
+$(out)$(obj)/%.o : $(obj)/%.c
+	$(call cmd,cc)
 
 .PHONY : $(PHONY)
+
+#
+# simplified printing information
+#
+quiet_cmd_cc       = CC      $@
+      cmd_cc       = $(CC) $(CFLAGS) $(EXCFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+
+quiet_cmd_ld       = LD      $@
+      cmd_ld       = $(LD) -r -o $@ $^
+
+cmd = @$(if $($(quiet)cmd_$(1)),echo '  $($(quiet)cmd_$(1))' &&) $(cmd_$(1))
