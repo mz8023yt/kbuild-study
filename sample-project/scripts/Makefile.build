@@ -72,7 +72,7 @@ $(out)$(obj)/%.o : $(obj)/%.c
 # simplified printing information
 #
 quiet_cmd_cc       = CC      $@
-      cmd_cc       = $(CC) $(CFLAGS) $(EXCFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+      cmd_cc       = $(CC) $(CFLAGS) $(EXCFLAGS) -Wp,-MMD,$(dep_file) -c -o $@ $<
 
 quiet_cmd_ld       = LD      $@
       cmd_ld       = $(LD) -r -o $@ $^
