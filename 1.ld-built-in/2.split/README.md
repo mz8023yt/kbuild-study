@@ -9,7 +9,7 @@
 - 汇编，.s --> o，gcc -C
 - 链接，.o --> elf, ld
 
-这里考虑到 Kbuild 的特点，是将一个目录下的所有源文件先编译为 .o 然后统一链接为 built-in.o 后。再将各个目录的 built-in.o 一起链接为 app。
+这里考虑到 Kbuild 的特点，是将一个目录下的所有源文件先编译为 .o 然后统一链接为 built-in.o 后。再将各个目录的 built-in.o 一起链接为 app，因此参考这套思想，优化 Makefile。
 
 ```
 app: main.c printf.c printf.h
@@ -25,14 +25,14 @@ clean:
 ## 用法
 
 ```
-paul@maz:~/study/kbuild-study/1.ld-built-in/2.split$ make
+$ make
 gcc -o main.o -c main.c
 gcc -o printf.o -c printf.c
 ld -r -s -o built-in.o main.o printf.o
 gcc -o app built-in.o
-paul@maz:~/study/kbuild-study/1.ld-built-in/2.split$ make clean 
+
+$ make clean 
 rm -rf app *.o
-paul@maz:~/study/kbuild-study/1.ld-built-in/2.split$
 ```
 
 ## 学习总结

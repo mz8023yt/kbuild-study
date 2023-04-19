@@ -17,11 +17,11 @@ clean:
 ## 用法
 
 ```
-paul@maz:~/study/kbuild-study/1.ld-built-in/1.simple$ make
+$ make
 gcc -o app main.c printf.c printf.h
-paul@maz:~/study/kbuild-study/1.ld-built-in/1.simple$ make clean
+
+$ make clean
 rm -rf app
-paul@maz:~/study/kbuild-study/1.ld-built-in/1.simple$
 ```
 
 ## 学习总结
