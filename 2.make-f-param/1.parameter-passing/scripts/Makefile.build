@@ -1,6 +1,6 @@
 PHONY := __build
 
 __build:
-	echo $(param0)
-	echo $(param1)
-	echo $(param2)
+	@echo "param0 = $(param0)"
+	@echo "param1 = $(param1)"
+	@echo "param2 = $(param2)"

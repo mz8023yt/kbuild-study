@@ -16,7 +16,7 @@ all:
 	@echo " ---------------- top makefile print end ----------------"
 ```
 
-脚本 Makefile 内容为：
+脚本 scripts/Makefile 内容为：
 
 ```
 PHONY := __build
@@ -29,26 +29,22 @@ __build:
 
 结论如下：
 
-- param0，make -f 调试用传参
+- param0，make -f 调用时传参
 - param1，导出为环境变量传参
 - param2，传递失败
 
 ## 用法
 
 ```
-paul@maz:~/study/kbuild-study/2.make-f-param/1.parameter-passing$ make
+$ make
  --------------- top makefile print start ---------------
 make -f scripts/Makefile.build param0=val0
-make[1]: Entering directory '/home/paul/study/kbuild-study/2.make-f-param/1.parameter-passing'
-echo val0
-val0
-echo val1
-val1
-echo 
-
-make[1]: Leaving directory '/home/paul/study/kbuild-study/2.make-f-param/1.parameter-passing'
+make[1]: Entering directory 'kbuild-system/2.make-f-param/1.parameter-passing'
+param0 = val0
+param1 = val1
+param2 = 
+make[1]: Leaving directory 'kbuild-system/2.make-f-param/1.parameter-passing'
  ---------------- top makefile print end ----------------
-paul@maz:~/study/kbuild-study/2.make-f-param/1.parameter-passing$
 ```
 
 ## 学习总结
