@@ -1,4 +1,3 @@
-
 CROSS_COMPILE   =
 AS              = $(CROSS_COMPILE)as
 LD              = $(CROSS_COMPILE)ld
@@ -17,13 +16,14 @@ export CFLAGS LDFLAGS
 
 srctree         := $(shell pwd)
 export srctree
-include $(srctree)/scripts/Makefile.include
+
+include scripts/Makefile.include
 
 TARGET := app
 
 obj-y += main.o
-obj-y += a/
-obj-y += b/
+obj-y += drivers/
+obj-y += modules/
 
 all:
 	$(Q)$(MAKE) -C ./ -f $(srctree)/scripts/Makefile.build

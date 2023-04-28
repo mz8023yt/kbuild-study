@@ -22,8 +22,8 @@ include $(srctree)/scripts/Makefile.include
 TARGET := app
 
 obj-y += main.o
-obj-y += a/
-obj-y += b/
+obj-y += drivers/
+obj-y += modules/
 
 all:
 	$(Q)$(MAKE) $(mbuild)=.

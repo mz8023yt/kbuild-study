@@ -6,50 +6,48 @@
 
 ```
 $ make
-gcc -Wall -O2 -g -Wp,-MD,.a1.o.d -c -o a1.o a1.c
-ld -r -o built-in.o a1.o
-gcc -Wall -O2 -g -Wp,-MD,.a.o.d -c -o a.o a.c
-ld -r -o built-in.o a.o a1/built-in.o
-gcc -Wall -O2 -g -Wp,-MD,.b.o.d -c -o b.o b.c
-ld -r -o built-in.o b.o
+gcc -Wall -O2 -g -Wp,-MD,.keypad.o.d -c -o keypad.o keypad.c
+gcc -Wall -O2 -g -Wp,-MD,.touchpad.o.d -c -o touchpad.o touchpad.c
+ld -r -o built-in.o keypad.o touchpad.o
+gcc -Wall -O2 -g -Wp,-MD,.st7735.o.d -c -o st7735.o st7735.c
+gcc -Wall -O2 -g -Wp,-MD,.st7789.o.d -c -o st7789.o st7789.c
+ld -r -o built-in.o st7735.o st7789.o
+gcc -Wall -O2 -g -Wp,-MD,.sensor.o.d -c -o sensor.o sensor.c
+ld -r -o built-in.o sensor.o input/built-in.o lcd/built-in.o
+gcc -Wall -O2 -g -Wp,-MD,.cmd.o.d -c -o cmd.o cmd.c
+gcc -Wall -O2 -g -Wp,-MD,.list.o.d -c -o list.o list.c
+ld -r -o built-in.o cmd.o list.o
 gcc -Wall -O2 -g -Wp,-MD,.main.o.d -c -o main.o main.c
-ld -r -o built-in.o main.o a/built-in.o b/built-in.o
+ld -r -o built-in.o main.o drivers/built-in.o modules/built-in.o
 gcc  -o app built-in.o
-
-$ make clean
-rm -f ./main.o ./b/b.o ./b/built-in.o ./built-in.o ./a/built-in.o ./a/a1/built-in.o ./a/a1/a1.o ./a/a.o
-rm -f ./b/.b.o.d ./.main.o.d ./a/.a.o.d ./a/a1/.a1.o.d
-rm -f app
 ```
 
 这是没有添加 `--no-print-directory` 选项的打印输出。
 
 ```
 $ make
-make -C ./ -f /home/paul/study/kbuild-study/3.recursive-link/1.subdir/scripts/Makefile.build
-make[1]: Entering directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir'
-make -C a -f /home/paul/study/kbuild-study/3.recursive-link/1.subdir/scripts/Makefile.build
-make[2]: Entering directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir/a'
-make -C a1 -f /home/paul/study/kbuild-study/3.recursive-link/1.subdir/scripts/Makefile.build
-make[3]: Entering directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir/a/a1'
-gcc -Wall -O2 -g -Wp,-MD,.a1.o.d -c -o a1.o a1.c
-ld -r -o built-in.o a1.o
-make[3]: Leaving directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir/a/a1'
-gcc -Wall -O2 -g -Wp,-MD,.a.o.d -c -o a.o a.c
-ld -r -o built-in.o a.o a1/built-in.o
-make[2]: Leaving directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir/a'
-make -C b -f /home/paul/study/kbuild-study/3.recursive-link/1.subdir/scripts/Makefile.build
-make[2]: Entering directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir/b'
-gcc -Wall -O2 -g -Wp,-MD,.b.o.d -c -o b.o b.c
-ld -r -o built-in.o b.o
-make[2]: Leaving directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir/b'
+make[1]: Entering directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir'
+make[2]: Entering directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/drivers'
+make[3]: Entering directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/drivers/input'
+gcc -Wall -O2 -g -Wp,-MD,.keypad.o.d -c -o keypad.o keypad.c
+gcc -Wall -O2 -g -Wp,-MD,.touchpad.o.d -c -o touchpad.o touchpad.c
+ld -r -o built-in.o keypad.o touchpad.o
+make[3]: Leaving directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/drivers/input'
+make[3]: Entering directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/drivers/lcd'
+gcc -Wall -O2 -g -Wp,-MD,.st7735.o.d -c -o st7735.o st7735.c
+gcc -Wall -O2 -g -Wp,-MD,.st7789.o.d -c -o st7789.o st7789.c
+ld -r -o built-in.o st7735.o st7789.o
+make[3]: Leaving directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/drivers/lcd'
+gcc -Wall -O2 -g -Wp,-MD,.sensor.o.d -c -o sensor.o sensor.c
+ld -r -o built-in.o sensor.o input/built-in.o lcd/built-in.o
+make[2]: Leaving directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/drivers'
+make[2]: Entering directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/modules'
+gcc -Wall -O2 -g -Wp,-MD,.cmd.o.d -c -o cmd.o cmd.c
+gcc -Wall -O2 -g -Wp,-MD,.list.o.d -c -o list.o list.c
+ld -r -o built-in.o cmd.o list.o
+make[2]: Leaving directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir/modules'
 gcc -Wall -O2 -g -Wp,-MD,.main.o.d -c -o main.o main.c
-ld -r -o built-in.o main.o a/built-in.o b/built-in.o
-make[1]: Leaving directory '/home/paul/study/kbuild-study/3.recursive-link/1.subdir'
+ld -r -o built-in.o main.o drivers/built-in.o modules/built-in.o
+make[1]: Leaving directory '/home/paul/work/kbuild-system/3.recursive-link/2.no-print-dir'
 gcc  -o app built-in.o
-
-$ make clean
-rm -f ./main.o ./b/b.o ./b/built-in.o ./built-in.o ./a/built-in.o ./a/a1/built-in.o ./a/a1/a1.o ./a/a.o
-rm -f ./b/.b.o.d ./.main.o.d ./a/.a.o.d ./a/a1/.a1.o.d
-rm -f app
 ```
