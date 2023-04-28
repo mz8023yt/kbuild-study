@@ -20,8 +20,8 @@ export srctree
 TARGET := app
 
 obj-y += main.o
-obj-y += a/
-obj-y += b/
+obj-y += drivers/
+obj-y += modules/
 
 all:
 	make -C ./ -f $(srctree)/scripts/Makefile.build
