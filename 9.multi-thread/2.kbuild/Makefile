@@ -23,12 +23,14 @@ TARGET := mconf
 
 obj-y += src/
 
-all:
+$(TARGET): built-in.o
+	$(CC) $^ $(LDFLAGS) -o $(TARGET)
+
+built-in.o: 
 	$(Q)$(MAKE) $(mbuild)=.
-	$(CC) built-in.o $(LDFLAGS) -o $(TARGET)
 
 clean:
 	$(Q)$(MAKE) $(mclean)=.
 	rm -f $(TARGET)
 
-.PHONY:all clean
+.PHONY:built-in.o clean

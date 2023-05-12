@@ -13,13 +13,16 @@ build :
 ### 清空变量值，避免环境变量干扰
 obj-y       :=
 subdir-y    :=
-
 ### 包含子目录的 Makefile
 include $(kbuild-dir)/Makefile
 
 ### 将 obj-y 中所有的子目录目标最后的反斜杠给删除
+# $(filter %/, $(obj-y))) 找出 obj-y 中所有以 / 结尾的字符
+# 将找到的 / 结尾的字符删除 / 后缀, 即将 xxx/ 修改为 xxx
 __subdir-y  := $(patsubst %/,%,$(filter %/, $(obj-y)))
+# 删除前后多余的空格
 subdir-y    += $(strip $(__subdir-y))
+# 将目录路径添加上, obj 为当前目录相对于根目录的路径
 subdir-y    := $(addprefix $(obj)/,$(subdir-y))
 
 ### 将 obj-y 中所有的子目录目标，在子目录下创建 built-in.o 目标
@@ -28,26 +31,20 @@ subdir_objs := $(foreach f,$(subdir-y),$(f)/built-in.o)
 ### 筛选出非目录目标
 cur_objs    := $(filter-out %/, $(obj-y))
 cur_objs    := $(addprefix $(obj)/,$(cur_objs))
-dep_files   := $(foreach f,$(cur_objs),.$(f).d)
 
 ifeq ($(mdebug), 1)
 $(info $(obj):1 $(subdir-y))
 $(info $(obj):2 $(subdir_objs))
 $(info $(obj):3 $(cur_objs))
-$(info $(obj):4 $(dep_files))
 endif
 
-PHONY += $(subdir-y)
+build: $(cur_objs) $(subdir_objs)
+	$(LD) -r -o $(obj)/built-in.o $^
 
-build : $(subdir-y) $(obj)/built-in.o
-$(subdir-y):
-	$(Q)$(MAKE) $(mbuild)=$@
-
-$(obj)/built-in.o : $(cur_objs) $(subdir_objs)
-	$(LD) -r -o $@ $^
-dep_file = ./$@.d
+$(subdir_objs):
+	$(Q)$(MAKE) $(mbuild)=$(@:/built-in.o=)
 
 $(obj)/%.o : $(obj)/%.c
-	$(CC) $(CFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY : $(PHONY)
