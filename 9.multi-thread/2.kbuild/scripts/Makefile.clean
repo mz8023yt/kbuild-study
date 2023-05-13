@@ -31,7 +31,7 @@ endif
 PHONY += $(subdir-y)
 
 __clean : $(subdir-y) 
-	rm -rf $(cur_objs) $(dep_files) $(obj)/built-in.o
+	$(Q)rm -rf $(cur_objs) $(dep_files) $(obj)/built-in.o
 
 $(subdir-y):
 	$(Q)$(MAKE) $(mclean)=$@

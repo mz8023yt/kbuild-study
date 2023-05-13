@@ -7,12 +7,12 @@ src         := $(obj)
 kbuild-dir  := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
 
 ### 目标
-PHONY := build
-build :
+build:
 
 ### 清空变量值，避免环境变量干扰
 obj-y       :=
 subdir-y    :=
+
 ### 包含子目录的 Makefile
 include $(kbuild-dir)/Makefile
 
@@ -39,12 +39,12 @@ $(info $(obj):3 $(cur_objs))
 endif
 
 build: $(cur_objs) $(subdir_objs)
-	$(LD) -r -o $(obj)/built-in.o $^
+	$(Q)$(LD) -r -o $(src)/built-in.o $^
 
 $(subdir_objs):
 	$(Q)$(MAKE) $(mbuild)=$(@:/built-in.o=)
 
-$(obj)/%.o : $(obj)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+$(src)/%.o : $(src)/%.c
+	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY : $(PHONY)
+.PHONY: build $(subdir_objs)
